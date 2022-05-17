@@ -8,6 +8,7 @@ import { fetchCoinInfo, fetchCoinTickers } from "../api";
 
 const Title = styled.h1`
   font-size: 48px;
+  font-weight: bold;
   color: ${(props) => props.theme.accentColor};
 `;
 
@@ -32,7 +33,7 @@ const Header = styled.header`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.boxColor};
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -64,7 +65,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.boxColor};
   padding: 7px 0px;
   border-radius: 10px;
   color: ${(props) =>
@@ -72,6 +73,23 @@ const Tab = styled.span<{ isActive: boolean }>`
   a {
     display: block;
   }
+`;
+
+const BackBtn = styled.button`
+  width: 100px;
+  height: 40px;
+  font-size: 24px;
+  background-color: ${(props) => props.theme.boxColor};
+  color: ${(props) => props.theme.textColor};
+  &:hover {
+    background-color: ${(props) => props.theme.textColor};
+    color: ${(props) => props.theme.accentColor};
+  }
+  margin: 20px 0px 0px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
 `;
 
 interface RouteState {
@@ -141,10 +159,10 @@ function Coin() {
   );
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
     ["tickers", coinId],
-    () => fetchCoinTickers(coinId!),
-    {
-      refetchInterval: 5000,
-    }
+    () => fetchCoinTickers(coinId!)
+    // {
+    //   refetchInterval: 5000,
+    // }
   );
   const priceMatch = useMatch("/:coinId/price");
   const chartMatch = useMatch("/:coinId/chart");
@@ -156,6 +174,9 @@ function Coin() {
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </title>
       </Helmet>
+      <BackBtn>
+        <Link to={`/`}>↩ Back</Link>
+      </BackBtn>
       <Header>
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
@@ -182,7 +203,7 @@ function Coin() {
           <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
-              <span>Total Suply:</span>
+              <span>Total Supply:</span>
               <span>{tickersData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
