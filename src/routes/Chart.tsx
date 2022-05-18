@@ -93,7 +93,7 @@ function Chart() {
       type: "candlestick",
       height: 500,
       width: 500,
-      toolbar: { show: false },
+      // toolbar: { show: false },
       background: "transparent",
     },
     // title: {
@@ -101,9 +101,10 @@ function Chart() {
     //   align: "left",
     // },
     xaxis: {
-      // labels: {
-      //   show: false,
-      // },
+      labels: {
+        // show: false,
+        format: "M/dd",
+      },
       axisBorder: {
         show: false,
       },
@@ -113,6 +114,7 @@ function Chart() {
       type: "datetime",
     },
     yaxis: {
+      // show: false,
       tooltip: {
         enabled: true,
       },
@@ -131,7 +133,7 @@ function Chart() {
       name: "price",
       data: data?.map((price) => {
         return {
-          x: price.time_close,
+          x: price.time_close.slice(0, 10),
           y: [
             price.open.toFixed(3),
             price.high.toFixed(3),
